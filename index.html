@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bella Notte Italian</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+  <style>
+    body {
+  font-family: 'Sacramento', cursive;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+header {
+  background-color: #c72c41;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+h1 {
+  margin: 0;
+  font-size: 3em;
+}
+
+nav {
+  background-color: #f1f1f1;
+  padding: 10px;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+nav li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+a {
+  color: #c72c41;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #000;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+.menu-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.item {
+  width: 30%;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.item h3 {
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+
+.cart {
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f1f1f1;
+  display: none; /* Initially hide the cart */
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.cart-total {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+#checkout {
+  background-color: #c72c41;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Search bar styles */
+#search {
+  float: right;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+  </style>
+<body>
+  <header>
+    <h1>Bella Notte Italian</h1>
+    <p>Authentic Italian Cuisine</p>
+    <label for="search">Search Menu Items:</label>
+<input type="text" id="search" placeholder="Search Menu">
+
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="menu">
+      <h2>Our Menu</h2>
+      <div class="menu-items">
+        <div class="item">
+          <h3>Caprese Salad (V) - $12.99</h3>
+          <p>Fresh mozzarella, tomatoes, basil, and olive oil</p>
+          <button data-price="12.99" class="add-to-cart" onclick="addToCart(event)">Add to Cart</button>
+        </div>
+        <div class="item">
+          <h3>Bruschetta (V) - $8.99</h3>
+          <p>Toasted bread with tomato, garlic, and olive oil</p>
+          <button data-price="8.99" class="add-to-cart" onclick="addToCart(event)">Add to Cart</button>
+        </div>
+        <div class="item">
+          <h3>Spaghetti Carbonara - $15.99</h3>
+          <p>Creamy egg sauce with pancetta and pecorino cheese</p>
+          <button data-price="15.99" class="add-to-cart"onclick="addToCart(event)">Add to Cart</button>
+        </div>
+        <div class="item">
+          <h3>Penne Arrabbiata - $14.99</h3>
+          <p>Spicy tomato sauce with garlic and chili flakes</p>
+          <button data-price="14.99" class="add-to-cart"onclick="addToCart(event)">Add to Cart</button>
+        </div>
+        <div class="item">
+          <h3>Lasagna - $16.99</h3>
+          <p>Layers of pasta, meat sauce, béchamel sauce, and cheese</p>
+          <button data-price="16.99" class="add-to-cart"onclick="addToCart(event)">Add to Cart</button>
+        </div>
+        <div class="item">
+          <h3>Pizza Margherita (V) - $12.99</h3>
+          <p>Tomato sauce, mozzarella cheese, and fresh basil</p>
+          <button data-price="12.99" class="add-to-cart"onclick="addToCart(event)">Add to Cart</button>
+        </div>
+        </div>
+      <div class="cart" id="cart"> </div>
+      <button id="checkout">Checkout</button>
+    </section>
+  </main>
+  <footer>
+  <p>&copy; 2024 Bella Notte Italian. All rights reserved.</p>
+  <p>Contact us:</p>
+  <ul>
+    <li>Phone: (555) 555-5555</li>
+    <li>Address: 123 Main Street, Anytown, CA 12345</li>
+    <li>Email: info@bellanotte.com</li>
+  </ul>
+</footer>
+
+
+  <script>
+    const items = [
+  { name: "Caprese Salad (V)", price: 12.99 },
+  { name: "Bruschetta (V)", price: 8.99 },
+  { name: "Spaghetti Carbonara", price: 15.99 },
+  { name: "Penne Arrabbiata", price: 14.99 },
+  { name: "Lasagna", price: 16.99 },
+  { name: "Pizza Margherita (V)", price: 12.99 },
+  // Add more items here following the same format
+];
+
+const searchInput = document.getElementById("search");
+const menuItemsContainer = document.querySelector(".menu-items");
+const cartContainer = document.getElementById("cart");
+const checkoutButton = document.getElementById("checkout");
+let cartTotal = 0; // Variable to store cart total
+
+// Function to render menu items based on search term
+function renderMenuItems(filteredItems) {
+  menuItemsContainer.innerHTML = ""; // Clear previous items
+  filteredItems.forEach((item) => {
+    const menuItem = document.createElement("div");
+    menuItem.classList.add("item");
+    menuItem.innerHTML = `
+      <h3>${item.name} - $${item.price.toFixed(2)}</h3>
+      <p>Description...</p>
+      <button data-price="${item.price}" class="add-to-cart">Add to Cart</button>
+    `;
+    menuItemsContainer.appendChild(menuItem);
+  });
+}
+
+// Function to filter menu items based on search term
+function filterMenuItems(searchTerm) {
+  const filteredItems = items.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  renderMenuItems(filteredItems);
+}
+    searchInput.addEventListener("keyup", (event) => {
+  const searchTerm = event.target.value.toLowerCase();
+  filterMenuItems(searchTerm);
+});
+    
+
+  // Update cart total display (implemented later)
+}
+
+    // Function to add item to cart
+function addToCart(event) {
+  const button = event.target;
+  const price = parseFloat(button.dataset.price); // Get price from data attribute
+
+  // Check if cart item already exists
+  const cartItem = cartContainer.querySelector(`[data-name="${button.textContent.split('-')[0]}"]`);
+  if (cartItem) {
+    const currentQuantity = parseInt(cartItem.querySelector("span").textContent);
+    cartItem.querySelector("span").textContent = currentQuantity + 1;
+  } else {
+    const cartItem = document.createElement("div");
+    cartItem.classList.add("cart-item");
+    cartItem.dataset.name = button.textContent.split('-')[0]; // Set data attribute for item name
+    cartItem.innerHTML = `
+      <span>1</span> x ${button.textContent} - ${(price * 1).toFixed(2)}
+      <button class="remove-from-cart">Remove</button>
+    `;
+    cartContainer.appendChild(cartItem);
+  }
+  
+    // Function to remove item from cart (can be implemented if needed)
+function removeFromCart(event) {
+  const cartItem = event.target.parentElement; // Get the cart item element
+
+  // Extract price from the cart item content
+  const price = parseFloat(cartItem.querySelector("span").textContent.split("x")[1].split("-")[1]); 
+
+  // Remove the cart item from the DOM
+  cartItem.remove();
+
+  // Update cart total by subtracting the item's price
+  cartTotal -= price;
+}
+
+// Event listener for "Add to Cart" buttons
+menuItemsContainer.addEventListener("click", (event) => {
+  if (event.target.classList.contains("add-to-cart")) {
+    addToCart(event);
+  }
+});
+
+// Functionality for checkout button (can be implemented to redirect to a checkout page or display cart summary)
+checkoutButton.addEventListener("click", () => {
+  if (cartTotal > 0) {
+    alert(`Your cart total is: $$ ${cartTotal.toFixed(2)}`);
+  } else {
+    alert("Your cart is empty!");
+  }
+});
+// Function to render menu items based on search term
+
+// Function to add item to cart
+function addToCart(event) {
+  const button = event.target;
+  const price = parseFloat(button.dataset.price); // Get price from data attribute
+
+  // Check if cart item already exists
+  const cartItem = cartContainer.querySelector(`[data-name="${button.textContent.split('-')[0]}"]`);
+  if (cartItem) {
+    const currentQuantity = parseInt(cartItem.querySelector("span").textContent);
+    cartItem.querySelector("span").textContent = currentQuantity + 1;
+  } else {
+    const cartItem = document.createElement("div");
+    cartItem.classList.add("cart-item");
+    cartItem.dataset.name = button.textContent.split('-')[0]; // Set data attribute for item name
+    cartItem.innerHTML = `
+      <span>1</span> x ${button.textContent} - ${(price * 1).toFixed(2)}
+      <button class="remove-from-cart">Remove</button>
+    `;
+    cartContainer.appendChild(cartItem);
+  }
+
+
+
+menuItemsContainer.addEventListener("click", (event) => {
+  if (event.target.classList.contains("add-to-cart")) {
+    addToCart(event);
+  }
+});
+
+
+cartContainer.addEventListener("click", (event) => {
+  if (event.target.classList.contains("remove-from-cart")) {
+    event.target.parentElement.remove(); // Remove cart item
+    // Update cart total (implemented later)
+  }
+});
+
+// Functionality for checkout button (can be implemented to redirect to checkout page or display cart summary)
+checkoutButton.addEventListener("click", () => {
+  // Implement your checkout logic here
+  alert("Your order is being processed!");
+});
+
+// Initial render of menu items
+renderMenuItems(items);
+
+// Note: This is a basic implementation. You can enhance it further by:
+// - Adding cart total functionality
+// - Displaying cart items with descriptions
+// - Implementing proper checkout process
+
+  </script>
+</body>
+</html>
